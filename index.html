@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Malla Ingeniería Estadística</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #dff6ff, #eaf9ff);
+  margin: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #2b5c73;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+}
+
+.semestre {
+  padding: 15px;
+  border-radius: 18px;
+  width: 220px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Tonos distintos para cada nivel */
+.semestre:nth-child(1) { background: #cfefff; }
+.semestre:nth-child(2) { background: #bde7ff; }
+.semestre:nth-child(3) { background: #a9ddff; }
+.semestre:nth-child(4) { background: #96d4ff; }
+.semestre:nth-child(5) { background: #82caff; }
+.semestre:nth-child(6) { background: #6fc1ff; }
+
+.semestre h2 {
+  text-align: center;
+  color: #1f4d63;
+}
+
+.ramo {
+  background: #eaf9ff;
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.ramo:hover {
+  background: #ffffff;
+}
+
+.aprobado {
+  text-decoration: line-through;
+  background: #b2f0ff !important;
+  color: #4a4a4a;
+}
+</style>
+
+<script>
+function toggleAprobado(element) {
+  element.classList.toggle("aprobado");
+}
+</script>
+</head>
+
+<body>
+
+<h1>Malla Interactiva 💙</h1>
+
+<div class="container">
+
+<div class="semestre">
+<h2>Nivel 1</h2>
+<div class="ramo" onclick="toggleAprobado(this)">Álgebra I (8)</div>
+<div class="ramo" onclick="toggleAprobado(this)">Cálculo I (8)</div>
+<div class="ramo" onclick="toggleAprobado(this)">Intro. Prob. y Estadística I (8)</div>
+<div class="ramo" onclick="toggleAprobado(this)">Taller de Habilidades (3)</div>
+<div class="ramo" onclick="toggleAprobado(this)">Coprogmático I (3)</div>
+</div>
+
+<div class="semestre">
+<h2>Nivel 2</h2>
+<div class="ramo" onclick="toggleAprobado(this)">Álgebra II (7)</div>
+<div class="ramo" onclick="toggleAprobado(this)">Cálculo II (7)</div>
+<div class="ramo" onclick="toggleAprobado(this)">Intro. Prob. y Estadística II (6)</div>
+<div class="ramo" onclick="toggleAprobado(this)">Computación I (5)</div>
+<div class="ramo" onclick="toggleAprobado(this)">Inglés I (3)</div>
+</div>
+
+</div>
+
+</body>
+</html>
