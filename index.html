@@ -1,100 +1,331 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Malla Ingeniería Estadística</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Malla Ingeniería Estadística</title>
 
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #dff6ff, #eaf9ff);
-  margin: 20px;
-}
+  <style>
+    :root{
+      /* Fondo general */
+      --bg1:#dff6ff;
+      --bg2:#eaf9ff;
 
-h1 {
-  text-align: center;
-  color: #2b5c73;
-}
+      /* Texto */
+      --text:#1f4d63;
+      --title:#245d76;
 
-.container {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-}
+      /* Ramos */
+      --ramo:#f7feff;
+      --ramoHover:#ffffff;
 
-.semestre {
-  padding: 15px;
-  border-radius: 18px;
-  width: 220px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
+      /* Aprobado */
+      --aprobBg:#bfefff;
+      --aprobText:#2f2f2f;
 
-/* Tonos distintos para cada nivel */
-.semestre:nth-child(1) { background: #cfefff; }
-.semestre:nth-child(2) { background: #bde7ff; }
-.semestre:nth-child(3) { background: #a9ddff; }
-.semestre:nth-child(4) { background: #96d4ff; }
-.semestre:nth-child(5) { background: #82caff; }
-.semestre:nth-child(6) { background: #6fc1ff; }
+      /* Bordes / sombras */
+      --stroke: rgba(31, 77, 99, 0.25);
+      --shadow: rgba(0,0,0,0.14);
+      --shadowSoft: rgba(0,0,0,0.10);
+    }
 
-.semestre h2 {
-  text-align: center;
-  color: #1f4d63;
-}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(to right, var(--bg1), var(--bg2));
+      margin: 0;
+      padding: 18px 18px 26px 18px;
+      color: var(--text);
+    }
 
-.ramo {
-  background: #eaf9ff;
-  padding: 8px;
-  margin: 8px 0;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.3s;
-  font-size: 14px;
-}
+    h1{
+      text-align:center;
+      margin: 10px 0 16px 0;
+      font-size: clamp(22px, 2.7vw, 34px);
+      color: var(--title);
+      letter-spacing: 0.2px;
+    }
 
-.ramo:hover {
-  background: #ffffff;
-}
+    /* Contenedor horizontal (como tu captura) */
+    .container{
+      display:flex;
+      gap: 18px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 6px 6px 14px 6px;
+      scroll-behavior: smooth;
+    }
 
-.aprobado {
-  text-decoration: line-through;
-  background: #b2f0ff !important;
-  color: #4a4a4a;
-}
-</style>
+    /* Barra scroll más linda (Chrome/Edge) */
+    .container::-webkit-scrollbar{ height: 10px; }
+    .container::-webkit-scrollbar-track{ background: rgba(255,255,255,0.55); border-radius: 999px; }
+    .container::-webkit-scrollbar-thumb{ background: rgba(36,93,118,0.25); border-radius: 999px; }
 
-<script>
-function toggleAprobado(element) {
-  element.classList.toggle("aprobado");
-}
-</script>
+    .nivel{
+      flex: 0 0 320px;          /* columnas grandes */
+      border-radius: 18px;
+      padding: 14px 14px 12px 14px;
+      box-shadow: 0 8px 18px var(--shadow);
+      border: 2px solid rgba(255,255,255,0.65);
+      position: relative;
+    }
+
+    /* Tonos celeste pastel por columna */
+    .nivel:nth-child(1){  background:#d6f3ff; }
+    .nivel:nth-child(2){  background:#c6eeff; }
+    .nivel:nth-child(3){  background:#b6e8ff; }
+    .nivel:nth-child(4){  background:#a6e2ff; }
+    .nivel:nth-child(5){  background:#96dcff; }
+    .nivel:nth-child(6){  background:#86d6ff; }
+    .nivel:nth-child(7){  background:#d2f7ff; }
+    .nivel:nth-child(8){  background:#c2f1ff; }
+    .nivel:nth-child(9){  background:#b1ebff; }
+    .nivel:nth-child(10){ background:#a1e5ff; }
+
+    .nivel h2{
+      text-align:center;
+      margin: 6px 0 10px 0;
+      font-size: 18px;
+      color: #173f52;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(23,63,82,0.18);
+    }
+
+    .ramo{
+      background: var(--ramo);
+      border: 2px solid rgba(31,77,99,0.18);
+      box-shadow: 0 3px 10px var(--shadowSoft);
+      border-radius: 14px;
+      padding: 12px 12px;
+      margin: 10px 0;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+      font-size: 16px;          /* letras más grandes */
+      line-height: 1.25;
+      text-align: center;       /* como tu malla */
+      font-weight: 600;
+      color: #1b465b;
+    }
+
+    .ramo:hover{
+      background: var(--ramoHover);
+      border-color: rgba(31,77,99,0.28);
+      transform: translateY(-1px);
+    }
+
+    .aprobado{
+      background: var(--aprobBg) !important;
+      color: var(--aprobText) !important;
+      text-decoration: line-through;
+      border-color: rgba(31,77,99,0.30) !important;
+    }
+
+    .creditos{
+      text-align:center;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 2px solid rgba(23,63,82,0.16);
+      font-weight: 700;
+      color: #173f52;
+      font-size: 14px;
+    }
+
+    .nota{
+      text-align:center;
+      margin: 0 0 10px 0;
+      color: rgba(23,63,82,0.75);
+      font-size: 13px;
+    }
+
+    /* Botones top */
+    .topbar{
+      display:flex;
+      justify-content:center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn{
+      border: 2px solid rgba(23,63,82,0.20);
+      background: rgba(255,255,255,0.65);
+      color:#173f52;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      transition: 0.15s ease;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,0.90);
+      transform: translateY(-1px);
+    }
+  </style>
+
+  <script>
+    // Clave para guardar estado en el navegador
+    const STORAGE_KEY = "malla_aprobados_v1";
+
+    function getSaved() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveAll(state) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function toggleRamo(el){
+      el.classList.toggle("aprobado");
+      const id = el.getAttribute("data-id");
+      const state = getSaved();
+      state[id] = el.classList.contains("aprobado");
+      saveAll(state);
+    }
+
+    function applySaved(){
+      const state = getSaved();
+      document.querySelectorAll(".ramo[data-id]").forEach(el=>{
+        const id = el.getAttribute("data-id");
+        if(state[id]) el.classList.add("aprobado");
+      });
+    }
+
+    function resetAll(){
+      if(!confirm("¿Seguro que quieres desmarcar TODOS los ramos?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll(".ramo").forEach(el=>el.classList.remove("aprobado"));
+    }
+
+    window.addEventListener("DOMContentLoaded", applySaved);
+  </script>
 </head>
 
 <body>
+  <h1>Malla Interactiva 💙</h1>
 
-<h1>Malla Interactiva 💙</h1>
+  <div class="topbar">
+    <button class="btn" onclick="resetAll()">Reiniciar marcas</button>
+  </div>
+  <div class="nota">Haz clic en un ramo para marcarlo como aprobado. Se guarda automáticamente ✨</div>
 
-<div class="container">
+  <div class="container">
 
-<div class="semestre">
-<h2>Nivel 1</h2>
-<div class="ramo" onclick="toggleAprobado(this)">Álgebra I (8)</div>
-<div class="ramo" onclick="toggleAprobado(this)">Cálculo I (8)</div>
-<div class="ramo" onclick="toggleAprobado(this)">Intro. Prob. y Estadística I (8)</div>
-<div class="ramo" onclick="toggleAprobado(this)">Taller de Habilidades (3)</div>
-<div class="ramo" onclick="toggleAprobado(this)">Coprogmático I (3)</div>
-</div>
+    <!-- Nivel 1 -->
+    <div class="nivel">
+      <h2>Nivel 1</h2>
+      <div class="ramo" data-id="n1-alg1" onclick="toggleRamo(this)">Álgebra I (8)</div>
+      <div class="ramo" data-id="n1-cal1" onclick="toggleRamo(this)">Cálculo I (8)</div>
+      <div class="ramo" data-id="n1-intprob1" onclick="toggleRamo(this)">Intro. a la Prob. y Estad. I (8)</div>
+      <div class="ramo" data-id="n1-tallerhab" onclick="toggleRamo(this)">Taller de Desarrollo de Habilidades (3)</div>
+      <div class="ramo" data-id="n1-copro1" onclick="toggleRamo(this)">Coprogmático I (3)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
 
-<div class="semestre">
-<h2>Nivel 2</h2>
-<div class="ramo" onclick="toggleAprobado(this)">Álgebra II (7)</div>
-<div class="ramo" onclick="toggleAprobado(this)">Cálculo II (7)</div>
-<div class="ramo" onclick="toggleAprobado(this)">Intro. Prob. y Estadística II (6)</div>
-<div class="ramo" onclick="toggleAprobado(this)">Computación I (5)</div>
-<div class="ramo" onclick="toggleAprobado(this)">Inglés I (3)</div>
-</div>
+    <!-- Nivel 2 -->
+    <div class="nivel">
+      <h2>Nivel 2</h2>
+      <div class="ramo" data-id="n2-alg2" onclick="toggleRamo(this)">Álgebra II (7)</div>
+      <div class="ramo" data-id="n2-cal2" onclick="toggleRamo(this)">Cálculo II (7)</div>
+      <div class="ramo" data-id="n2-intprob2" onclick="toggleRamo(this)">Intro. a la Prob. y Estad. II (6)</div>
+      <div class="ramo" data-id="n2-comp1" onclick="toggleRamo(this)">Computación I (5)</div>
+      <div class="ramo" data-id="n2-ing1" onclick="toggleRamo(this)">Inglés I (3)</div>
+      <div class="ramo" data-id="n2-expresion" onclick="toggleRamo(this)">Téc. de Expresión Oral y Escrita (2)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
 
-</div>
+    <!-- Nivel 3 -->
+    <div class="nivel">
+      <h2>Nivel 3</h2>
+      <div class="ramo" data-id="n3-alglin" onclick="toggleRamo(this)">Álgebra Lineal (7)</div>
+      <div class="ramo" data-id="n3-cal3" onclick="toggleRamo(this)">Cálculo III (7)</div>
+      <div class="ramo" data-id="n3-calprob" onclick="toggleRamo(this)">Cálculo de Probabilidades (6)</div>
+      <div class="ramo" data-id="n3-comp2" onclick="toggleRamo(this)">Computación II (5)</div>
+      <div class="ramo" data-id="n3-softest" onclick="toggleRamo(this)">Uso de Software Estadístico (2)</div>
+      <div class="ramo" data-id="n3-ing2" onclick="toggleRamo(this)">Inglés II (3)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
 
+    <!-- Nivel 4 -->
+    <div class="nivel">
+      <h2>Nivel 4</h2>
+      <div class="ramo" data-id="n4-compcal" onclick="toggleRamo(this)">Complementos de Cálculo (7)</div>
+      <div class="ramo" data-id="n4-inf" onclick="toggleRamo(this)">Inferencia Estadística (6)</div>
+      <div class="ramo" data-id="n4-comp3" onclick="toggleRamo(this)">Computación III (5)</div>
+      <div class="ramo" data-id="n4-fis" onclick="toggleRamo(this)">Física General (4)</div>
+      <div class="ramo" data-id="n4-inting" onclick="toggleRamo(this)">Intro. a Cs. de la Ingeniería (5)</div>
+      <div class="ramo" data-id="n4-ing3" onclick="toggleRamo(this)">Inglés III (3)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
+
+    <!-- Nivel 5 -->
+    <div class="nivel">
+      <h2>Nivel 5</h2>
+      <div class="ramo" data-id="n5-teoprob" onclick="toggleRamo(this)">Teoría de Probabilidad (7)</div>
+      <div class="ramo" data-id="n5-muestreo" onclick="toggleRamo(this)">Muestreo (6)</div>
+      <div class="ramo" data-id="n5-modlin" onclick="toggleRamo(this)">Modelos Lineales (6)</div>
+      <div class="ramo" data-id="n5-nopar" onclick="toggleRamo(this)">Estadística no Paramétrica (6)</div>
+      <div class="ramo" data-id="n5-indlab" onclick="toggleRamo(this)">Inducción Laboral (2)</div>
+      <div class="ramo" data-id="n5-ing4" onclick="toggleRamo(this)">Inglés IV (3)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
+
+    <!-- Nivel 6 -->
+    <div class="nivel">
+      <h2>Nivel 6</h2>
+      <div class="ramo" data-id="n6-procest" onclick="toggleRamo(this)">Procesos Estocásticos (7)</div>
+      <div class="ramo" data-id="n6-encuestas" onclick="toggleRamo(this)">Diseño y Análisis de Encuestas (6)</div>
+      <div class="ramo" data-id="n6-multiv" onclick="toggleRamo(this)">Métodos Multivariantes (7)</div>
+      <div class="ramo" data-id="n6-simul" onclick="toggleRamo(this)">Simulación Estadística (7)</div>
+      <div class="ramo" data-id="n6-etica" onclick="toggleRamo(this)">Ética Estadística (3)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
+
+    <!-- Nivel 7 -->
+    <div class="nivel">
+      <h2>Nivel 7</h2>
+      <div class="ramo" data-id="n7-series" onclick="toggleRamo(this)">Series de Tiempo (7)</div>
+      <div class="ramo" data-id="n7-exper" onclick="toggleRamo(this)">Diseño y Análisis de Experimentos (6)</div>
+      <div class="ramo" data-id="n7-elect1" onclick="toggleRamo(this)">Electivo I (6)</div>
+      <div class="ramo" data-id="n7-bio" onclick="toggleRamo(this)">Bioestadística (6)</div>
+      <div class="ramo" data-id="n7-econ" onclick="toggleRamo(this)">Economía (5)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
+
+    <!-- Nivel 8 -->
+    <div class="nivel">
+      <h2>Nivel 8</h2>
+      <div class="ramo" data-id="n8-taller1" onclick="toggleRamo(this)">Taller I (8)</div>
+      <div class="ramo" data-id="n8-elect2" onclick="toggleRamo(this)">Electivo II (6)</div>
+      <div class="ramo" data-id="n8-elect3" onclick="toggleRamo(this)">Electivo III (6)</div>
+      <div class="ramo" data-id="n8-conta" onclick="toggleRamo(this)">Contabilidad y Costos (7)</div>
+      <div class="ramo" data-id="n8-copro2" onclick="toggleRamo(this)">Coprogmático II (3)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
+
+    <!-- Nivel 9 -->
+    <div class="nivel">
+      <h2>Nivel 9</h2>
+      <div class="ramo" data-id="n9-taller2" onclick="toggleRamo(this)">Taller II (12)</div>
+      <div class="ramo" data-id="n9-elect4" onclick="toggleRamo(this)">Electivo IV (6)</div>
+      <div class="ramo" data-id="n9-semt1" onclick="toggleRamo(this)">Seminario de Tesis I (6)</div>
+      <div class="ramo" data-id="n9-evalproj" onclick="toggleRamo(this)">Evaluación de Proyectos (6)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
+
+    <!-- Nivel 10 -->
+    <div class="nivel">
+      <h2>Nivel 10</h2>
+      <div class="ramo" data-id="n10-semt2" onclick="toggleRamo(this)">Seminario de Tesis II (26)</div>
+      <div class="ramo" data-id="n10-comunic" onclick="toggleRamo(this)">Comunicación Integral y Liderazgo (4)</div>
+      <div class="creditos">30 créditos</div>
+    </div>
+
+  </div>
 </body>
 </html>
