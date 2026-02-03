@@ -7,23 +7,18 @@
 
   <style>
     :root{
-      /* Fondo general */
       --bg1:#dff6ff;
       --bg2:#eaf9ff;
 
-      /* Texto */
       --text:#1f4d63;
       --title:#245d76;
 
-      /* Ramos */
       --ramo:#f7feff;
       --ramoHover:#ffffff;
 
-      /* Aprobado */
       --aprobBg:#bfefff;
       --aprobText:#2f2f2f;
 
-      /* Bordes / sombras */
       --stroke: rgba(31, 77, 99, 0.25);
       --shadow: rgba(0,0,0,0.14);
       --shadowSoft: rgba(0,0,0,0.10);
@@ -39,13 +34,117 @@
 
     h1{
       text-align:center;
-      margin: 10px 0 16px 0;
+      margin: 10px 0 10px 0;
       font-size: clamp(22px, 2.7vw, 34px);
       color: var(--title);
       letter-spacing: 0.2px;
     }
 
-    /* Contenedor horizontal (como tu captura) */
+    .topbar{
+      display:flex;
+      justify-content:center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn{
+      border: 2px solid rgba(23,63,82,0.20);
+      background: rgba(255,255,255,0.65);
+      color:#173f52;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      transition: 0.15s ease;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,0.90);
+      transform: translateY(-1px);
+    }
+
+    .nota{
+      text-align:center;
+      margin: 0 0 10px 0;
+      color: rgba(23,63,82,0.75);
+      font-size: 13px;
+    }
+
+    /* Panel de progreso / hitos */
+    .status{
+      max-width: 980px;
+      margin: 0 auto 14px auto;
+      background: rgba(255,255,255,0.70);
+      border: 2px solid rgba(23,63,82,0.16);
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.10);
+      padding: 12px 14px;
+    }
+
+    .statusRow{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 13px;
+      border: 2px solid rgba(23,63,82,0.14);
+      background: rgba(214,243,255,0.8);
+      color: #173f52;
+      white-space: nowrap;
+    }
+
+    .badge.ok{
+      background: rgba(191,239,255,0.95);
+      border-color: rgba(23,63,82,0.22);
+    }
+
+    .badge.lock{
+      opacity: 0.55;
+      filter: grayscale(20%);
+    }
+
+    .mini{
+      font-size: 12px;
+      color: rgba(23,63,82,0.78);
+      margin-top: 8px;
+      line-height: 1.25;
+    }
+
+    .bar{
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(23,63,82,0.12);
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .bar > div{
+      height: 100%;
+      width: 0%;
+      background: rgba(36,93,118,0.55);
+      border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+
+    .kpi{
+      font-weight: 800;
+      color:#173f52;
+    }
+
+    /* Contenedor horizontal */
     .container{
       display:flex;
       gap: 18px;
@@ -55,13 +154,12 @@
       scroll-behavior: smooth;
     }
 
-    /* Barra scroll más linda (Chrome/Edge) */
     .container::-webkit-scrollbar{ height: 10px; }
     .container::-webkit-scrollbar-track{ background: rgba(255,255,255,0.55); border-radius: 999px; }
     .container::-webkit-scrollbar-thumb{ background: rgba(36,93,118,0.25); border-radius: 999px; }
 
     .nivel{
-      flex: 0 0 320px;          /* columnas grandes */
+      flex: 0 0 320px;
       border-radius: 18px;
       padding: 14px 14px 12px 14px;
       box-shadow: 0 8px 18px var(--shadow);
@@ -69,7 +167,6 @@
       position: relative;
     }
 
-    /* Tonos celeste pastel por columna */
     .nivel:nth-child(1){  background:#d6f3ff; }
     .nivel:nth-child(2){  background:#c6eeff; }
     .nivel:nth-child(3){  background:#b6e8ff; }
@@ -100,9 +197,9 @@
       cursor: pointer;
       user-select: none;
       transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
-      font-size: 16px;          /* letras más grandes */
+      font-size: 16px;
       line-height: 1.25;
-      text-align: center;       /* como tu malla */
+      text-align: center;
       font-weight: 600;
       color: #1b465b;
     }
@@ -129,55 +226,79 @@
       color: #173f52;
       font-size: 14px;
     }
-
-    .nota{
-      text-align:center;
-      margin: 0 0 10px 0;
-      color: rgba(23,63,82,0.75);
-      font-size: 13px;
-    }
-
-    /* Botones top */
-    .topbar{
-      display:flex;
-      justify-content:center;
-      gap: 10px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn{
-      border: 2px solid rgba(23,63,82,0.20);
-      background: rgba(255,255,255,0.65);
-      color:#173f52;
-      padding: 8px 12px;
-      border-radius: 999px;
-      cursor:pointer;
-      font-weight: 700;
-      font-size: 13px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-      transition: 0.15s ease;
-    }
-    .btn:hover{
-      background: rgba(255,255,255,0.90);
-      transform: translateY(-1px);
-    }
   </style>
 
   <script>
-    // Clave para guardar estado en el navegador
     const STORAGE_KEY = "malla_aprobados_v1";
 
+    // Hitos oficiales del plan (SCT-Chile):
+    // Bachiller: 120 SCT, Licenciatura: 240 SCT, Título: 300 SCT. (Res. 542 Plan 4702)
+    const HITO_BACHILLER = 120;
+    const HITO_LICENCIATURA = 240;
+    const HITO_TITULO = 300;
+
     function getSaved() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-      } catch (e) {
-        return {};
-      }
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+      catch (e) { return {}; }
     }
 
     function saveAll(state) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function parseCreditos(textoRamo){
+      // Extrae el número final entre paréntesis: "Álgebra I (8)" -> 8
+      const m = textoRamo.match(/\((\d+)\)\s*$/);
+      return m ? Number(m[1]) : 0;
+    }
+
+    function calcTotales(){
+      const ramos = Array.from(document.querySelectorAll(".ramo[data-id]"));
+      let total = 0;
+      let aprob = 0;
+
+      ramos.forEach(el=>{
+        const c = parseCreditos(el.textContent);
+        total += c;
+        if(el.classList.contains("aprobado")) aprob += c;
+      });
+
+      return { total, aprob };
+    }
+
+    function setBadge(id, ok){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.classList.toggle("ok", ok);
+      el.classList.toggle("lock", !ok);
+      el.querySelector(".state").textContent = ok ? "Obtenible ✅" : "Pendiente ⏳";
+    }
+
+    function updateStatus(){
+      const { total, aprob } = calcTotales();
+      const pct = total > 0 ? Math.min(100, (aprob/total)*100) : 0;
+
+      const txtCred = document.getElementById("credTxt");
+      const barFill = document.getElementById("barFill");
+      const titulo = document.getElementById("hitoActual");
+
+      txtCred.innerHTML = `<span class="kpi">${aprob}</span> / ${total} créditos aprobados`;
+      barFill.style.width = pct.toFixed(1) + "%";
+
+      const okB = aprob >= HITO_BACHILLER;
+      const okL = aprob >= HITO_LICENCIATURA;
+      const okT = aprob >= HITO_TITULO;
+
+      setBadge("badgeBach", okB);
+      setBadge("badgeLic", okL);
+      setBadge("badgeTit", okT);
+
+      let msg = "Aún no alcanzas un hito de grado.";
+      if(okT) msg = "Completaste los créditos del plan para el Título (falta cumplir requisitos institucionales de titulación).";
+      else if(okL) msg = "Completaste los créditos para la Licenciatura.";
+      else if(okB) msg = "Completaste los créditos para el Bachiller.";
+
+      titulo.textContent = msg;
     }
 
     function toggleRamo(el){
@@ -186,6 +307,7 @@
       const state = getSaved();
       state[id] = el.classList.contains("aprobado");
       saveAll(state);
+      updateStatus();
     }
 
     function applySaved(){
@@ -194,12 +316,14 @@
         const id = el.getAttribute("data-id");
         if(state[id]) el.classList.add("aprobado");
       });
+      updateStatus();
     }
 
     function resetAll(){
       if(!confirm("¿Seguro que quieres desmarcar TODOS los ramos?")) return;
       localStorage.removeItem(STORAGE_KEY);
       document.querySelectorAll(".ramo").forEach(el=>el.classList.remove("aprobado"));
+      updateStatus();
     }
 
     window.addEventListener("DOMContentLoaded", applySaved);
@@ -214,6 +338,32 @@
   </div>
   <div class="nota">Haz clic en un ramo para marcarlo como aprobado. Se guarda automáticamente ✨</div>
 
+  <!-- Panel de hitos -->
+  <div class="status">
+    <div class="statusRow">
+      <div class="badge" id="badgeBach" title="Bachiller: 120 SCT">
+        🎓 Bachiller (120) · <span class="state">Pendiente ⏳</span>
+      </div>
+      <div class="badge" id="badgeLic" title="Licenciatura: 240 SCT">
+        📘 Licenciatura (240) · <span class="state">Pendiente ⏳</span>
+      </div>
+      <div class="badge" id="badgeTit" title="Título profesional: 300 SCT + requisitos institucionales">
+        🏁 Título (300) · <span class="state">Pendiente ⏳</span>
+      </div>
+    </div>
+
+    <div class="mini">
+      <div id="credTxt"><span class="kpi">0</span> / 300 créditos aprobados</div>
+      <div class="bar" aria-label="Progreso de créditos"><div id="barFill"></div></div>
+      <div class="mini" style="margin-top:8px;">
+        <span class="kpi">Hito actual:</span> <span id="hitoActual">Aún no alcanzas un hito de grado.</span>
+      </div>
+      <div class="mini">
+        Nota: que sea “obtenible” por créditos no reemplaza el trámite formal, y el título exige además requisitos institucionales de titulación. (Res. 542 Plan 4702)
+      </div>
+    </div>
+  </div>
+
   <div class="container">
 
     <!-- Nivel 1 -->
@@ -223,7 +373,7 @@
       <div class="ramo" data-id="n1-cal1" onclick="toggleRamo(this)">Cálculo I (8)</div>
       <div class="ramo" data-id="n1-intprob1" onclick="toggleRamo(this)">Intro. a la Prob. y Estad. I (8)</div>
       <div class="ramo" data-id="n1-tallerhab" onclick="toggleRamo(this)">Taller de Desarrollo de Habilidades (3)</div>
-      <div class="ramo" data-id="n1-copro1" onclick="toggleRamo(this)">Coprogmático I (3)</div>
+      <div class="ramo" data-id="n1-copro1" onclick="toggleRamo(this)">Coprogramático I (3)</div>
       <div class="creditos">30 créditos</div>
     </div>
 
@@ -304,7 +454,7 @@
       <div class="ramo" data-id="n8-elect2" onclick="toggleRamo(this)">Electivo II (6)</div>
       <div class="ramo" data-id="n8-elect3" onclick="toggleRamo(this)">Electivo III (6)</div>
       <div class="ramo" data-id="n8-conta" onclick="toggleRamo(this)">Contabilidad y Costos (7)</div>
-      <div class="ramo" data-id="n8-copro2" onclick="toggleRamo(this)">Coprogmático II (3)</div>
+      <div class="ramo" data-id="n8-copro2" onclick="toggleRamo(this)">Coprogramático II (3)</div>
       <div class="creditos">30 créditos</div>
     </div>
 
